@@ -6,48 +6,38 @@
  *
  */
 
-public class Philosopher implements Runnable
-{
-        private DiningServer server;
-        private int       philNum;
-        
-        public Philosopher(DiningServer server, int philNum)
-        {
-                this.server = server;
-                this.philNum = philNum;
+public class Philosopher extends Thread implements Runnable{
+    int philosopherNumber;
+    DiningServer ds;
+
+    //Initialize Philosopher number and Dining Server in constructor
+    public Philosopher(int pNo, DiningServer ds) {
+        philosopherNumber = pNo;
+        this.ds = ds;
+    }
+
+    @Override
+    public void run() {
+        int sleepTime;
+        while (true) {
+            try {
+                //Try to take both the chopticks
+                ds.takeForks(philosopherNumber);
+                System.out.println("Philosopher " + (philosopherNumber + 1) + " is eating.");
+                //Got both the chopticks. Not eat
+                sleepTime = (int) ((Math.random() * (3000 - 1000)) + 1000);
+                System.out.println("Philosopher " + (philosopherNumber + 1) + " ate for " + sleepTime / (float)1000 + " seconds");
+                Thread.sleep(sleepTime);
+                //Eating complete. Return both the chopsticks and start thinking
+                ds.returnForks(philosopherNumber);
+                sleepTime = (int) ((Math.random() * (3000 - 1000)) + 1000);
+                System.out.println("Philosopher " + (philosopherNumber + 1) + " thinking for " + sleepTime / (float)1000 + " seconds");
+                Thread.sleep(sleepTime);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        
-        private void thinking()
-        {
-                int sleeptime = (int) (4 * Math.random() );
-                try { Thread.sleep(sleeptime*1000); }
-                catch (InterruptedException e) {}
-        }
-        
-        private void eating()
-        {
-                int sleeptime = (int) (4* Math.random() );
-                try { Thread.sleep(sleeptime*1000); }
-                catch (InterruptedException e) {}
-        }
-        
-        // philosophers alternate between thinking and eating
-        public void run()
-        {
-                while (true)
-                {
-                        System.out.println("philosopher " + philNum + " is thinking.");
-                        thinking();
-                        
-                        server.takeForks(philNum);
-                        
-                        System.out.println("philosopher " + philNum + " is eating.");
-                        
-                        eating();
-                        
-                        System.out.println("philosopher " + philNum + " is done eating.");
-                        
-                        server.returnForks(philNum);
-                }
-        }
+    }
+
 }
