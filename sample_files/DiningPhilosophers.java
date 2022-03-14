@@ -1,3 +1,5 @@
+import java.util.concurrent.locks.*;
+
 /**
  * DiningPhilosophers.java
  *
@@ -5,20 +7,17 @@
  *
  */
 
-public class DiningPhilosophers
-{  
-   public static void main(String args[])
-   {
-      DiningServer server = new DiningServerImpl();
 
-      Philosopher[] pArr = new Philosopher[DiningServerImpl.NUM_PHILOSOPHERS];
-     
-     // create the philosopher threads
-     for (int i = 0; i < DiningServerImpl.NUM_PHILOSOPHERS; i++)
-        pArr[i] = new Philosopher(server,i);
-     
-    // start threads 
-     for (int i = 0; i < DiningServerImpl.NUM_PHILOSOPHERS; i++)
-         new Thread(pArr[i]).start();
+public class DiningPhilosophers {
+
+   public static void main(String[] args) {
+
+      //loop to to create 5 philosophers and test them
+      DiningServer test = new DiningServerImpl();
+      for(int i = 0; i < 5; i++) {
+         new Philosopher(i, test).start();
+      }
+
    }
+
 }
