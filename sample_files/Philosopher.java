@@ -1,3 +1,11 @@
+/**
+ * Philosopher.java
+ *
+ * This class represents each philosopher thread.
+ * Philosophers alternate between eating and thinking.
+ *
+ */
+
 public class Philosopher implements Runnable
 {
         private DiningServer server;
@@ -11,13 +19,17 @@ public class Philosopher implements Runnable
         
         private void thinking()
         {
-        SleepUtilities.nap();
+                int sleeptime = (int) (4 * Math.random() );
+                try { Thread.sleep(sleeptime*1000); }
+                catch (InterruptedException e) {}
         }
         
         private void eating()
         {
-                SleepUtilities.nap();
-    }
+                int sleeptime = (int) (4* Math.random() );
+                try { Thread.sleep(sleeptime*1000); }
+                catch (InterruptedException e) {}
+        }
         
         // philosophers alternate between thinking and eating
         public void run()
@@ -26,8 +38,6 @@ public class Philosopher implements Runnable
                 {
                         System.out.println("philosopher " + philNum + " is thinking.");
                         thinking();
-                        
-                        System.out.println("philosopher " + philNum + " is hungry.");
                         
                         server.takeForks(philNum);
                         
