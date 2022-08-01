@@ -1,2 +1,1 @@
-# CECS326-Project2
-CECS326-Project2
+Implements the Dining Philosophers Solution to prevent deadlock with resource allocation in the operating system.
